@@ -1,5 +1,6 @@
 package jackson.rocha.algatransito.api.controller;
 
+import jackson.rocha.algatransito.domain.exception.NegocioException;
 import jackson.rocha.algatransito.domain.model.Proprietario;
 import jackson.rocha.algatransito.domain.repository.ProprietarioRepository;
 import jackson.rocha.algatransito.domain.service.RegistroProprietarioService;
@@ -59,6 +60,11 @@ public class ProprietarioController {
         registroProprietarioService.excluir(proprietarioId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<String> capturar(NegocioException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }
