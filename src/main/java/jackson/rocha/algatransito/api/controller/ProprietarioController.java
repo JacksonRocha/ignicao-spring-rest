@@ -2,6 +2,7 @@ package jackson.rocha.algatransito.api.controller;
 
 import jackson.rocha.algatransito.domain.model.Proprietario;
 import jackson.rocha.algatransito.repository.ProprietarioRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ProprietarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Proprietario adicionar(@RequestBody Proprietario proprietario) {
+    public Proprietario adicionar(@Valid @RequestBody Proprietario proprietario) {
         return proprietarioRepository.save(proprietario);
     }
 
@@ -45,6 +46,17 @@ public class ProprietarioController {
         proprietario = proprietarioRepository.save(proprietario);
 
         return ResponseEntity.ok(proprietario);
+    }
+
+    @DeleteMapping("/{proprietarioId}")
+    public ResponseEntity<Void> remover(@PathVariable Long proprietarioId) {
+        if (!proprietarioRepository.existsById(proprietarioId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        proprietarioRepository.deleteById(proprietarioId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
