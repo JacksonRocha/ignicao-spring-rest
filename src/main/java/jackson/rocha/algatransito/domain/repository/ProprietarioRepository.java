@@ -1,4 +1,4 @@
-package jackson.rocha.algatransito.repository;
+package jackson.rocha.algatransito.domain.repository;
 
 import jackson.rocha.algatransito.domain.model.Proprietario;
 import org.springframework.data.jpa.repository.JpaRepository;
