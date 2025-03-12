@@ -14,8 +14,16 @@ public class RegistroProprietarioService {
 
     @Transactional
     public Proprietario salvar(Proprietario proprietario) {
-        proprietarioRepository.save(proprietario);
-        return proprietario;
+        boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail())
+                .filter(p -> !p.equals(proprietario))
+                .isPresent();
+
+        if (emailEmUso) {
+            throw new RuntimeException("Já existe um proprietário cadastrado com este e-mail.");
+        }
+
+        return proprietarioRepository.save(proprietario);
+
     }
 
     @Transactional
