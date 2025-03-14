@@ -1,6 +1,5 @@
 package jackson.rocha.algatransito.api.controller;
 
-import jackson.rocha.algatransito.domain.exception.NegocioException;
 import jackson.rocha.algatransito.domain.model.Veiculo;
 import jackson.rocha.algatransito.domain.repository.VeiculoRepository;
 import jackson.rocha.algatransito.domain.service.RegistroVeiculoService;
@@ -37,11 +36,5 @@ public class VeiculoController {
     public Veiculo cadastrar(@Valid @RequestBody Veiculo novoVeiculo) {
         return registroVeiculoService.cadastrar(novoVeiculo);
     }
-
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<String> capturar(NegocioException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
 
 }
