@@ -1,5 +1,6 @@
 package jackson.rocha.algatransito.domain.service;
 
+import jackson.rocha.algatransito.domain.exception.NegocioException;
 import jackson.rocha.algatransito.domain.model.Proprietario;
 import jackson.rocha.algatransito.domain.repository.ProprietarioRepository;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,12 @@ public class RegistroProprietarioService {
 
     private final ProprietarioRepository proprietarioRepository;
 
+    public Proprietario buscar(Long proprietarioId) {
+        return proprietarioRepository.findById(proprietarioId)
+                .orElseThrow(() -> new NegocioException("Proprietário não encontrado."));
+
+    }
+
     @Transactional
     public Proprietario salvar(Proprietario proprietario) {
         boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail())
@@ -19,7 +26,7 @@ public class RegistroProprietarioService {
                 .isPresent();
 
         if (emailEmUso) {
-            throw new RuntimeException("Já existe um proprietário cadastrado com este e-mail.");
+            throw new NegocioException("Já existe um proprietário cadastrado com este e-mail.");
         }
 
         return proprietarioRepository.save(proprietario);
