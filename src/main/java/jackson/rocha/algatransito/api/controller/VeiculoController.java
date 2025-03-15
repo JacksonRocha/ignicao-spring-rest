@@ -6,6 +6,7 @@ import jackson.rocha.algatransito.domain.repository.VeiculoRepository;
 import jackson.rocha.algatransito.domain.service.RegistroVeiculoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class VeiculoController {
 
     private final VeiculoRepository veiculoRepository;
     private final RegistroVeiculoService registroVeiculoService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     public List<Veiculo> listar() {
@@ -28,18 +30,7 @@ public class VeiculoController {
     @GetMapping("/{veiculoId}")
     public ResponseEntity<VeiculoRepresentationModel> buscar(@PathVariable Long veiculoId) {
         return veiculoRepository.findById(veiculoId)
-                .map(veiculo -> {
-                    var veiculoRepresentationModel = new VeiculoRepresentationModel();
-                    veiculoRepresentationModel.setId(veiculo.getId());
-                    veiculoRepresentationModel.setNomeProprietario(veiculo.getProprietario().getNome());
-                    veiculoRepresentationModel.setMarca(veiculo.getMarca());
-                    veiculoRepresentationModel.setModelo(veiculo.getModelo());
-                    veiculoRepresentationModel.setPlaca(veiculo.getPlaca());
-                    veiculoRepresentationModel.setStatus(veiculo.getStatus());
-                    veiculoRepresentationModel.setDataCadastro(veiculo.getDataCadastro());
-                    veiculoRepresentationModel.setDataApreensao(veiculo.getDataApreensao());
-                    return veiculoRepresentationModel;
-                })
+                .map(veiculo -> modelMapper.map(veiculo, VeiculoRepresentationModel.class))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
