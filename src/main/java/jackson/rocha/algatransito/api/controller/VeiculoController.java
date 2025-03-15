@@ -1,5 +1,6 @@
 package jackson.rocha.algatransito.api.controller;
 
+import jackson.rocha.algatransito.api.model.VeiculoRepresentationModel;
 import jackson.rocha.algatransito.domain.model.Veiculo;
 import jackson.rocha.algatransito.domain.repository.VeiculoRepository;
 import jackson.rocha.algatransito.domain.service.RegistroVeiculoService;
@@ -25,8 +26,20 @@ public class VeiculoController {
     }
 
     @GetMapping("/{veiculoId}")
-    public ResponseEntity<Veiculo> buscar(@PathVariable Long veiculoId) {
+    public ResponseEntity<VeiculoRepresentationModel> buscar(@PathVariable Long veiculoId) {
         return veiculoRepository.findById(veiculoId)
+                .map(veiculo -> {
+                    var veiculoRepresentationModel = new VeiculoRepresentationModel();
+                    veiculoRepresentationModel.setId(veiculo.getId());
+                    veiculoRepresentationModel.setNomeProprietario(veiculo.getProprietario().getNome());
+                    veiculoRepresentationModel.setMarca(veiculo.getMarca());
+                    veiculoRepresentationModel.setModelo(veiculo.getModelo());
+                    veiculoRepresentationModel.setPlaca(veiculo.getPlaca());
+                    veiculoRepresentationModel.setStatus(veiculo.getStatus());
+                    veiculoRepresentationModel.setDataCadastro(veiculo.getDataCadastro());
+                    veiculoRepresentationModel.setDataApreensao(veiculo.getDataApreensao());
+                    return veiculoRepresentationModel;
+                })
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
