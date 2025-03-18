@@ -2,6 +2,7 @@ package jackson.rocha.algatransito.api.controller;
 
 import jackson.rocha.algatransito.api.assembler.VeiculoAssembler;
 import jackson.rocha.algatransito.api.model.VeiculoRepresentationModel;
+import jackson.rocha.algatransito.api.model.input.VeiculoInput;
 import jackson.rocha.algatransito.domain.model.Veiculo;
 import jackson.rocha.algatransito.domain.repository.VeiculoRepository;
 import jackson.rocha.algatransito.domain.service.RegistroVeiculoService;
@@ -37,8 +38,12 @@ public class VeiculoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VeiculoRepresentationModel cadastrar(@Valid @RequestBody Veiculo novoVeiculo) {
-        return veiculoAssembler.toModel(registroVeiculoService.cadastrar(novoVeiculo));
+    public VeiculoRepresentationModel cadastrar(@Valid @RequestBody VeiculoInput veiculoInput) {
+        Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInput);
+        Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
+
+        return veiculoAssembler.toModel(veiculoCadastrado);
+
     }
 
 }
