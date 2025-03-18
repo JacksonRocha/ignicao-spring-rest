@@ -1,0 +1,12 @@
+package jackson.rocha.algatransito.api.model;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ProprietarioResumoRepresentationModel {
+
+    private Long id;
+    private String nome;
+}
