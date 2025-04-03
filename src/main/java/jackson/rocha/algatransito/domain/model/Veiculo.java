@@ -55,11 +55,11 @@ public class Veiculo {
     @JsonProperty(access = Access.READ_ONLY)
     private OffsetDateTime dataApreensao;
 
-    @OneToMany(mappedBy = "veiculo")
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
     private List<Autuacao> autuacao = new ArrayList<>();
 
     public Autuacao adicionarAutuacao(Autuacao autuacao) {
-        autuacao.setDataCadastro(OffsetDateTime.now());
+        autuacao.setDataOcorrencia(OffsetDateTime.now());
         autuacao.setVeiculo(this);
         getAutuacao().add(autuacao);
         return autuacao;

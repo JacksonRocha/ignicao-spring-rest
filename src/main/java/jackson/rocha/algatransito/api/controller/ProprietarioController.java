@@ -45,9 +45,9 @@ public class ProprietarioController {
         }
 
         proprietario.setId(proprietarioId);
-        proprietario = registroProprietarioService.salvar(proprietario);
+        Proprietario proprietarioAtualizado = registroProprietarioService.salvar(proprietario);
 
-        return ResponseEntity.ok(proprietario);
+        return ResponseEntity.ok(proprietarioAtualizado);
     }
 
     @DeleteMapping("/{proprietarioId}")
