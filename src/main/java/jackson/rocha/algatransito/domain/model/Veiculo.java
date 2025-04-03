@@ -58,5 +58,11 @@ public class Veiculo {
     @OneToMany(mappedBy = "veiculo")
     private List<Autuacao> autuacao = new ArrayList<>();
 
+    public Autuacao adicionarAutuacao(Autuacao autuacao) {
+        autuacao.setDataCadastro(OffsetDateTime.now());
+        autuacao.setVeiculo(this);
+        getAutuacao().add(autuacao);
+        return autuacao;
+    }
 
 }
