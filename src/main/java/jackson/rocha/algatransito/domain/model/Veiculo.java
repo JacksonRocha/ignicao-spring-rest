@@ -2,6 +2,7 @@ package jackson.rocha.algatransito.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import jackson.rocha.algatransito.domain.exception.NegocioException;
 import jackson.rocha.algatransito.domain.validation.ValidationGroups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -64,5 +65,34 @@ public class Veiculo {
         getAutuacao().add(autuacao);
         return autuacao;
     }
+
+    public void apreender() {
+        if (estaApreendido()) {
+            throw new NegocioException("Veículo já está apreendido");
+        }
+
+        setStatus(StatusVeiculo.APREENDIDO);
+        setDataApreensao(OffsetDateTime.now());
+    }
+
+
+    public void removerApreensao() {
+        if (naoEstaApreendido()) {
+            throw new NegocioException("Veículo não está apreendido");
+        }
+
+        setStatus(StatusVeiculo.REGULAR);
+        setDataApreensao(null);
+    }
+
+
+    public boolean estaApreendido() {
+        return StatusVeiculo.APREENDIDO.equals(getStatus());
+    }
+
+    private boolean naoEstaApreendido() {
+        return !estaApreendido();
+    }
+
 
 }
