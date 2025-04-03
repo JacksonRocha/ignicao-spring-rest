@@ -1,5 +1,6 @@
 package jackson.rocha.algatransito.domain.service;
 
+import jackson.rocha.algatransito.domain.exception.EntidadeNaoEncontradaException;
 import jackson.rocha.algatransito.domain.exception.NegocioException;
 import jackson.rocha.algatransito.domain.model.Proprietario;
 import jackson.rocha.algatransito.domain.model.StatusVeiculo;
@@ -20,7 +21,7 @@ public class RegistroVeiculoService {
 
     public Veiculo buscar(Long veiculoId) {
         return veiculoRepository.findById(veiculoId)
-                .orElseThrow(() -> new NegocioException("Veículo não encontrado."));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Veículo não encontrado."));
 
     }
 

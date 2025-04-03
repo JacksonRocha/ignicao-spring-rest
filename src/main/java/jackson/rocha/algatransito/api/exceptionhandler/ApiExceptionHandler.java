@@ -1,5 +1,6 @@
 package jackson.rocha.algatransito.api.exceptionhandler;
 
+import jackson.rocha.algatransito.domain.exception.EntidadeNaoEncontradaException;
 import jackson.rocha.algatransito.domain.exception.NegocioException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -50,6 +51,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(URI.create("https://www.geekuniverse.com/erros/regra-de-negocio"));
         return problemDetail;
     }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ProblemDetail handlerEntidadeNaoEncontrada(EntidadeNaoEncontradaException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle(e.getMessage());
+        problemDetail.setType(URI.create("https://www.geekuniverse.com/erros/entidade-nao-encontrada"));
+        return problemDetail;
+    }
+
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handlerDataIntegrity() {
