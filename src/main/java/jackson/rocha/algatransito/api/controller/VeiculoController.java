@@ -5,6 +5,7 @@ import jackson.rocha.algatransito.api.model.VeiculoRepresentationModel;
 import jackson.rocha.algatransito.api.model.input.VeiculoInput;
 import jackson.rocha.algatransito.domain.model.Veiculo;
 import jackson.rocha.algatransito.domain.repository.VeiculoRepository;
+import jackson.rocha.algatransito.domain.service.ApreensaoVeiculoService;
 import jackson.rocha.algatransito.domain.service.RegistroVeiculoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class VeiculoController {
 
     private final VeiculoRepository veiculoRepository;
     private final RegistroVeiculoService registroVeiculoService;
+    private final ApreensaoVeiculoService apreensaoVeiculoService;
     private final VeiculoAssembler veiculoAssembler;
 
     @GetMapping
@@ -44,6 +46,18 @@ public class VeiculoController {
 
         return veiculoAssembler.toModel(veiculoCadastrado);
 
+    }
+
+    @PutMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apreender(@PathVariable Long veiculoId) {
+        apreensaoVeiculoService.apreender(veiculoId);
+    }
+
+    @DeleteMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeraApreensao(@PathVariable Long veiculoId) {
+        apreensaoVeiculoService.removerApreensao(veiculoId);
     }
 
 }
